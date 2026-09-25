@@ -6,11 +6,11 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 
 ## Status Atual do Projeto
 
-- Último commit integrado: Commit 4 (realizado por João Vítor Almeida)
-- Mensagem do commit 4: feat: implementa sistema especialista com encadeamento para tras e explicacao
-- Artefatos entregues: src/especialista.py
-- Próximo passo: Commit 5 (responsabilidade de Caio Lúcio Almeida)
-- Módulo a desenvolver: src/bayes.py (Análise probabilística do sensor óptico de pragas via Teorema de Bayes)
+- Último commit integrado: Commit 5 (realizado por Caio Lúcio Almeida)
+- Mensagem do commit 5: feat: implementa modulo bayesiano para analise do sensor de pragas
+- Artefatos entregues: src/bayes.py
+- Próximo passo: Commit 6 (responsabilidade de João Vítor Almeida)
+- Módulo a desenvolver: src/main.py (script principal gerando pomar, csv e grafico na pasta resultados/)
 
 ---
 
@@ -36,8 +36,8 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 | 2 | João Vítor | feat: implementa buscas cegas e informadas (BFS, DFS, UCS, A*) com 4 contadores e reabertura de nos | src/buscas.py | Concluído |
 | 3 | Caio Lúcio | feat: implementa busca local com subida de encosta e tempera simulada para k=15 | src/busca_local.py | Concluído |
 | 4 | João Vítor | feat: implementa sistema especialista com encadeamento para tras e explicacao | src/especialista.py | Concluído |
-| 5 | Caio Lúcio | feat: implementa modulo bayesiano para analise do sensor de pragas | src/bayes.py | Sua vez agora |
-| 6 | João Vítor | feat: implementa script principal src/main.py gerando pomar, csv e grafico | src/main.py, pasta resultados/ | Aguardando |
+| 5 | Caio Lúcio | feat: implementa modulo bayesiano para analise do sensor de pragas | src/bayes.py | Concluído |
+| 6 | João Vítor | feat: implementa script principal src/main.py gerando pomar, csv e grafico | src/main.py, pasta resultados/ | Sua vez agora |
 | 7 | Caio Lúcio | test: executa analise de escalabilidade experimental e limites teoricos | src/escalabilidade.py | Aguardando |
 | 8 | João Vítor | feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo) | src/contraexemplo_bonus.py | Aguardando |
 | 9 | Caio Lúcio | docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision | RELATORIO.md (Partes 1, 2 e 5) | Aguardando |
