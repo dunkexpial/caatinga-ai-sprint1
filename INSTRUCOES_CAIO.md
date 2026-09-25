@@ -6,11 +6,11 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 
 ## Status Atual do Projeto
 
-- Último commit integrado: Commit 8 (realizado por João Vítor Almeida)
-- Mensagem do commit 8: feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo)
-- Artefatos entregues: src/contraexemplo_bonus.py
-- Próximo passo: Commit 9 (responsabilidade de Caio Lúcio Almeida)
-- Módulo a desenvolver: RELATORIO.md (Partes 1, 2 e 5: PEAS, dimensões de ambiente e auditoria AgroVision)
+- Último commit integrado: Commit 9 (realizado por Caio Lúcio Almeida)
+- Mensagem do commit 9: docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision
+- Artefatos entregues: RELATORIO.md (Partes 1, 2 e 5)
+- Próximo passo: Commit 10 (responsabilidade de João Vítor Almeida)
+- Módulo a desenvolver: RELATORIO.md (Partes 3, 4 e Bônus da Liga de IA)
 
 ---
 
@@ -40,8 +40,8 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 | 6 | João Vítor | feat: implementa script principal src/main.py gerando pomar, csv e grafico | src/main.py, pasta resultados/ | Concluído |
 | 7 | Caio Lúcio | test: executa analise de escalabilidade experimental e limites teoricos | src/escalabilidade.py | Concluído |
 | 8 | João Vítor | feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo) | src/contraexemplo_bonus.py | Concluído |
-| 9 | Caio Lúcio | docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision | RELATORIO.md (Partes 1, 2 e 5) | Sua vez agora |
-| 10 | João Vítor | docs: detalha analise de heuristicas, quebra da base especialista e metricas bayesianas | RELATORIO.md (Partes 3, 4 e Bônus) | Aguardando |
+| 9 | Caio Lúcio | docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision | RELATORIO.md (Partes 1, 2 e 5) | Concluído |
+| 10 | João Vítor | docs: detalha analise de heuristicas, quebra da base especialista e metricas bayesianas | RELATORIO.md (Partes 3, 4 e Bônus) | Sua vez agora |
 | 11 | Caio Lúcio | docs: elabora ANEXO_IA.md com registro obrigatorio, prompts, erro documentado e reflexao | ANEXO_IA.md | Aguardando |
 | 12 | João Vítor | docs: finaliza README.md completo com instrucoes, tabela-resumo e mapa do repositorio | README.md | Aguardando |
 
