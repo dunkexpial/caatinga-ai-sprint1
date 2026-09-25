@@ -6,7 +6,7 @@
 **Docente:** Prof. Ronierison Maciel  
 **Equipe de Desenvolvimento:**  
 - **João Vítor Almeida dos Santos** (Matrícula: `24114066`)  
-- **Caio Lúcio dos Santos Almeida** (Matrícula: `24114068`)  
+- **Caio Lúcio dos Santos Almeida** (Matrícula: `24114035`)  
 **Semente Oficial Adotada:** `24114066`  
 
 ---
@@ -93,10 +93,10 @@ Onde:
 ### Contagem Formal do Espaço de Estados:
 - **Espaço Total Teórico:** $12 \times 12 = 144$ estados possíveis.
 - **Estrutura Topológica do Pomar Oficial (Semente `24114066`):**
-  - Carreadores firmes (`.`): **80 talhões** ($55,56\%$)
-  - Solo encharcado (`~`): **36 talhões** ($25,00\%$)
+  - Carreadores firmes (`.`): **74 talhões** ($51,39\%$)
+  - Solo encharcado (`~`): **42 talhões** ($29,17\%$)
   - Bloqueios intransitáveis (`#`): **28 talhões** ($19,44\%$)
-  - **Espaço de Estados Alcançáveis (Transitáveis):** $80 + 36 = 116$ estados livres.
+  - **Espaço de Estados Transitáveis:** $74 + 42 = 116$ estados livres.
 
 ---
 
@@ -131,31 +131,276 @@ Para garantir otimalidade sob custos heterogêneos, é obrigatório expandir a f
 
 ## 2.4 Síntese de Escalabilidade Experimental e Limites Teóricos
 
-A partir dos testes automatizados desenvolvidos no módulo [`src/escalabilidade.py`](file:///c:/Projetos%20Faculdade/caatinga-ai-sprint1/src/escalabilidade.py), variando $n$ desde 12 até 1000 com monitoramento de memória de pico via `tracemalloc`, consolidamos as seguintes constatações experimentais:
+A partir dos testes automatizados desenvolvidos no módulo [`src/escalabilidade.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/escalabilidade.py), variando $n$ desde 12 até 1000 com monitoramento de memória de pico via `tracemalloc`, consolidamos as seguintes constatações experimentais:
 
 ```text
 n     | Células    | BFS (ms)  Pico MB  | DFS (ms)  Pico MB  | UCS (ms)  Pico MB  | A* (ms)   Pico MB
 ------------------------------------------------------------------------------------------------------
-12    | 144        |     0.2      0.02  |     0.0      0.01  |     0.3      0.02  |     0.3      0.02
-40    | 1,600      |     2.1      0.14  |     0.5      0.02  |     3.4      0.14  |     4.7      0.15
-160   | 25,600     |    36.7      2.20  |     0.9      0.09  |    64.7      2.50  |    61.5      2.40
-600   | 360,000    |   565.9     48.10  |     4.4      0.40  |  1069.2     53.77  |  1285.2     51.20
-1000  | 1,000,000  |  1780.1    172.50  |     7.9      1.20  |  3461.6    188.45  |  4860.9    182.10
+12    | 144        |     0.7      0.01  |     0.1      0.01  |     0.3      0.01  |     0.3      0.02
+20    | 400        |     0.6      0.03  |     0.1      0.01  |     0.8      0.03  |     0.9      0.03
+40    | 1,600      |     2.6      0.10  |     0.6      0.04  |     3.8      0.09  |     3.1      0.13
+80    | 6,400      |    12.1      0.39  |     2.3      0.09  |    28.0      0.50  |    19.5      0.61
+160   | 25,600     |    44.0      1.70  |     1.1      0.09  |    91.3      2.62  |   115.0      2.95
+320   | 102,400    |   241.2      8.37  |     2.9      0.16  |   566.4     13.13  |   767.4     18.94
+600   | 360,000    |  1153.0     37.47  |     9.0      0.56  |  2322.5     55.93  |  2554.4     62.24
+1000  | 1,000,000  |  3719.1    132.69  |    16.2      1.08  |  6604.6    193.77  |  7878.8    230.93
 ```
 
 ### 🔬 Análise dos Limites Teóricos (Aula 03):
 
 1. **Complexidade Espacial do BFS e UCS: $O(b^d)$ (em árvore) / $O(n^2)$ (em grafo):**
-   - O consumo de memória de pico do UCS escalou de $0,02\text{ MB}$ ($n=12$) para quase **$190\text{ MB}$** ($n=1000$).
+   - O consumo de memória de pico do UCS escalou de $0,01\text{ MB}$ ($n=12$) para quase **$194\text{ MB}$** ($n=1000$).
    - O crescimento é estritamente quadrático com o número total de vértices transitáveis da grade ($O(|V|) = O(n^2)$), pois todas as células alcançadas precisam permanecer armazenadas nos dicionários `parent` e `cost_so_far`.
    - **Gargalo Crítico:** Em dimensões $n \ge 1800$, a manutenção da fila de prioridade `heapq` contendo centenas de milhares de estados sob isocusto leva a busca a ultrapassar o limite de tempo estipulado (> 60 segundos), tornando o UCS o **primeiro algoritmo a falhar por Timeout**.
 
 2. **Complexidade Espacial do DFS: $O(b \cdot m)$:**
-   - O DFS iterativo com pilha explícita demandou meros **$1,20\text{ MB}$** em $n=1000$, confirmando a vantagem teórica de armazenar apenas o caminho corrente e os irmãos não expandidos.
-   - **Estouro da Pilha de Chamadas:** Quando o DFS é implementado em sua forma canônica recursiva pura, qualquer rota cuja profundidade ultrapasse $m > 1000$ colapsa imediatamente com `RecursionError` pelo estouro da pilha de execução do interpretador, revelando a fragilidade da recursão sem salvaguarda de profundidade.
+   - O DFS iterativo com pilha explícita demandou meros **$1,08\text{ MB}$** em $n=1000$, confirmando a vantagem teórica de armazenar apenas o caminho corrente e os irmãos não expandidos.
+   - **Estouro da Pilha de Chamadas:** Quando o DFS é implementado em sua forma canônica recursiva pura, qualquer rota cuja profundidade ultrapasse $m > 1000$ colapsa imediatamente com `RecursionError` pelo estouro da pilha de execução do interpretador (`sys.getrecursionlimit()`), revelando a fragilidade da recursão sem salvaguarda de profundidade.
 
 3. **O Paradoxo Estrutural do DFS:**
-   - No gerador sintético oficial, o caminho garantido é construído passo a passo por sorteios entre Sul $(+1, 0)$ e Leste $(0, +1)$. Como a ordem fixa de expansão da dupla prioriza exatamente Sul e Leste, o DFS encontra o galpão de coleta quase em linha reta em tempo linear $O(n)$ (apenas 7.9 ms para 1 milhão de células), porém pagando o preço de entregar soluções com custo subótimo.
+   - No gerador sintético oficial, o caminho garantido é construído passo a passo por sorteios entre Sul $(+1, 0)$ e Leste $(0, +1)$. Como a ordem fixa de expansão da dupla prioriza exatamente Sul e Leste, o DFS encontra o galpão de coleta quase em linha reta em tempo linear $O(n)$ (apenas 16.2 ms para 1 milhão de células), porém pagando o preço de entregar soluções com custo subótimo.
+
+---
+
+# Parte 3 - Busca Informada e Busca Local
+
+## 3.1 Resultados Experimentais do Algoritmo A\*
+
+O algoritmo A\* foi implementado com reabertura de nós ativada (`reabrir_nos=True`) e avaliado com as três heurísticas obrigatórias sobre a grade $12 \times 12$ oficial:
+
+| Heurística | Expressão Matemática | Custo da Rota | Nós Expandidos | Fronteira Máxima | Admissível? (Prova/Condição) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **$h_1(n)$** | $h_1(n) = 0$ | **37** | 115 | 14 | ✅ **Sim** ($h_1 \le h^*$, reduz o A\* ao UCS) |
+| **$h_2(n)$** | $h_2(n) = \|\Delta r\| + \|\Delta c\|$ | **37** | **102** | 17 | ✅ **Sim** (demonstração na Seção 3.2) |
+| **$h_3(n)$** | $h_3(n) = 4 \times (\|\Delta r\| + \|\Delta c\|)$ | **40** | **23** | 24 | ❌ **Não** (inadmissível / inflacionada) |
+
+---
+
+## 3.2 Demonstração de Admissibilidade de $h_2$ e Superestimação Concreta de $h_3$
+
+### 📐 Prova Formal de Admissibilidade para $h_2$ (Distância de Manhattan):
+Seja $c_{min} = \min_{(r,c)} CUSTO[pomar[r][c]]$ o custo mínimo de transição em qualquer célula válida do pomar. No cenário avaliado, $c_{min} = 1$ (carreador firme).  
+Em uma malha ortogonal 2D com quatro movimentos possíveis (Sul, Leste, Oeste, Norte), a menor quantidade absoluta de passos necessária para viajar de qualquer estado $n = (r, c)$ até o objetivo $goal = (11, 11)$ no grafo relaxado (ausência de qualquer obstáculo) é dada exatamente pela métrica $L_1$:
+$$d_M(n, goal) = |r - 11| + |c - 11|$$
+Como cada passo ortogonal incorre obrigatoriamente em um custo de transição $c \ge c_{min} = 1$, o custo real restante $h^*(n)$ satisfaz com rigor:
+$$h^*(n) \ge c_{min} \times d_M(n, goal) = 1 \times (|r - 11| + |c - 11|) = h_2(n)$$
+Portanto, para todo e qualquer estado $n$, $h_2(n) \le h^*(n)$. Isso comprova formalmente que $h_2$ **nunca superestima o custo real restante**, sendo estritamente **admissível** (e também consistente/monótona, pois $|h_2(n) - h_2(n')| \le 1 \le c(n, a, n')$).
+
+### 🔍 Par Concreto de Talhões Onde $h_3$ Superestima o Custo Real Restante:
+Para demonstrar que $h_3(n) = 4 \times d_M(n, goal)$ é inadmissível, examinamos duas células concretas extraídas do pomar da semente `24114066`:
+
+1. **Talhão $n = (11, 10)$ vizinho direto do objetivo $(11, 11)$:**
+   - Célula de destino $goal = (11, 11)$ é carreador firme (`.`).
+   - Custo real restante medido via UCS: $h^*((11, 10)) = \mathbf{1}$ (basta entrar em $(11, 11)$).
+   - Valor heurístico calculado por $h_3$:
+     $$h_3((11, 10)) = 4 \times (|11 - 11| + |10 - 11|) = 4 \times 1 = \mathbf{4}$$
+   - **Superestimação:** $h_3((11, 10)) = 4 > h^*((11, 10)) = 1$ (superestima em **$300\%$**!).
+
+2. **Talhão de Partida $n = (0, 0)$:**
+   - Custo ótimo da rota calculado pelo UCS: $h^*((0, 0)) = \mathbf{37}$.
+   - Valor heurístico calculado por $h_3$:
+     $$h_3((0, 0)) = 4 \times (|0 - 11| + |0 - 11|) = 4 \times 22 = \mathbf{88}$$
+   - **Superestimação:** $h_3((0, 0)) = 88 > h^*((0, 0)) = 37$ (superestima em mais de **$137\%$**!).
+
+---
+
+## 3.3 A Pergunta Que Separa Quem Rodou de Quem Entendeu: Análise de $h_3$ vs UCS
+
+Ao comparar os custos devolvidos pelo A\* com heurística $h_3$ e pelo UCS:
+- Custo devolvido pelo UCS (Ótimo): **37**
+- Custo devolvido pelo A\* com $h_3$: **40**
+
+O custo com $h_3$ ficou **estritamente maior** que o ótimo ($40 > 37$).
+
+### 1. Cálculo da Perda Percentual e Expansões Poupadas ("Compradas"):
+- **Perda de Qualidade da Rota:**
+  $$\text{Perda Percentual} = \frac{40 - 37}{37} \times 100\% = \mathbf{8{,}11\%}$$
+- **Nós de Expansão Poupados:**
+  - O UCS expandiu **115 nós**.
+  - O A\* com $h_3$ expandiu apenas **23 nós**.
+  - A equipe "comprou" uma redução drástica de **92 nós expandidos** (uma economia de **$80{,}0\%$** de trabalho de expansão) aceitando pagar um acréscimo de $8{,}11\%$ no custo do trajeto.
+
+### 2. Condição de Negócio Verificável Para a Troca:
+Em que situação concreta da cooperativa agrícola vale a pena trocar a garantia matemática de otimalidade por velocidade bruta de processamento?
+> **Condição Técnica Verificável:**  
+> A substituição da garantia de otimalidade por velocidade ($A^*$ com heurística inflacionada/ponderada $\epsilon$-admissível) torna-se mandatória quando o trator opera em regime de **controle reativo em malha fechada** frente a obstáculos dinâmicos (ex.: operários colhendo manga ou gado cruzando o carreador), impondo um **limite de latência rígido de tempo de ciclo $\le 10\text{ ms}$** por replanejamento de trajetória.  
+> Se o UCS leva $> 150\text{ ms}$ para convergir em pomares extensos ($n \ge 200$), o trator precisaria parar fisicamente ou colidiria por atraso computacional (*deadline miss*). Sob o ponto de vista financeiro, o acréscimo de $8,11\%$ no consumo de diesel representa um custo adicional de aproximadamente **R$ 1,20 por ciclo**, amplamente superado pelo custo de inatividade de uma máquina de R$ 450.000,00 parada esperando o processador desempilhar nós do UCS.
+
+---
+
+## 3.4 Busca Local: Otimização de Inspeção de $K=15$ Talhões
+
+### Modelagem Formal do Problema (Aula 04):
+1. **Espaço de Estados:** Qualquer subconjunto $S \subset Livres$ de cardinalidade fixa $|S| = K = 15$, onde $Livres$ são os 116 talhões transitáveis do pomar.
+   - Espaço combinatório: $\binom{116}{15} \approx 2{,}45 \times 10^{18}$ combinações distintas.
+2. **Operador de Vizinhança (1-opt swap):** Um estado $S'$ é vizinho de $S$ se $S' = (S \setminus \{u\}) \cup \{v\}$, com $u \in S$ e $v \in (Livres \setminus S)$.
+3. **Função Objetivo (Maximização Multiobjetivo):**
+   $$f(S) = \sum_{p \in S} Risco(p) + \lambda \sum_{p \in S} \min_{q \in S, q \ne p} d_M(p, q)$$
+   Combina o risco agronômico acumulado (severidade basal de pragas/umidade) com um bônus de dispersão espacial regular ($\lambda = 2{,}0$) para garantir cobertura geográfica equilibrada.
+
+### Resultados Experimentais (30 Execuções Independentes):
+Implementados no módulo [`src/busca_local.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/busca_local.py):
+
+| Algoritmo de Busca Local | Score Médio | Desvio Padrão | Melhor Valor (Max) | Pior Valor (Min) | Tempo Médio por Rodada |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Subida de Encosta (Hill Climbing)** | **564,78** | 1,86 | **567,90** | 560,84 | 503,9 ms |
+| **Têmpera Simulada (Simulated Annealing)** | **562,62** | 1,84 | **566,39** | 558,12 | **73,3 ms** |
+
+### 🧠 Por que Aceitar Piora de Propósito Ajuda? (Fundamentação da Aula 04):
+A Subida de Encosta (Hill Climbing) adota uma política estritamente gananciosa: avalia a vizinhança completa e aceita transições se e somente se $\Delta f > 0$. Consequentemente, o algoritmo fica inexoravelmente aprisionado no **primeiro ótimo local ou platô** que intercepta na superfície de busca, sendo incapaz de transpor vales de menor pontuação para alcançar picos mais elevados.  
+A Têmpera Simulada (Simulated Annealing) introduz uma estratégia estocástica inspirada na termodinâmica: transições de piora ($\Delta f \le 0$) são aceitas com probabilidade controlada por temperatura:
+$$P(\text{aceitar piora}) = e^{\frac{\Delta f}{T}}$$
+- **Na fase inicial (alta temperatura $T$):** O algoritmo explora amplamente o espaço combinatório, aceitando dezenas de transições deletérias para escapar de bacias de atração medíocres.
+- **Na fase final (resfriamento geométrico $T \rightarrow 0$):** O sistema passa a comportar-se como a subida de encosta, convergindo estavelmente para o pico daquela bacia.
+- **Evidência nos 30 Experimentos:** Em nossas rodadas registradas no log do `busca_local.py`, cada execução do Simulated Annealing aceitou em média entre **40 a 75 pioras deliberadas** durante o regime de alta temperatura, permitindo ao algoritmo varrer configurações de dispersão espacial que o Hill Climbing descartava precocemente.
+
+---
+
+# Bônus - Liga de IA (+0,3 Ponto): Contraexemplo Formal para DFS > 2x Ótimo
+
+Atendendo às diretrizes do regulamento da Liga de IA, foi construída à mão uma grade $8 \times 8$ determinística demonstrando que a Busca em Profundidade (DFS) devolve uma rota cujo custo excede em quase 4 vezes o custo da rota ótima devolvida pelo UCS.
+
+Código executável e verificação implementados em [`src/contraexemplo_bonus.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/contraexemplo_bonus.py).
+
+### 1. Representação Visual da Grade 8x8 Construída à Mão:
+```text
+      0  1  2  3  4  5  6  7
+    -------------------------
+ 0 |  S  .  .  .  .  .  .  .   <- Rodovia Norte/Leste de Carreadores ('.', custo 1)
+ 1 |  ~  #  #  #  #  #  #  .   <- Miolo intransitável de Galpões ('#')
+ 2 |  ~  #  #  #  #  #  #  .
+ 3 |  ~  #  #  #  #  #  #  .
+ 4 |  ~  #  #  #  #  #  #  .
+ 5 |  ~  #  #  #  #  #  #  .
+ 6 |  ~  #  #  #  #  #  #  .
+ 7 |  ~  ~  ~  ~  ~  ~  ~  G   <- Vala Sul/Oeste de Solo Encharcado ('~', custo 4)
+```
+
+### 2. Resultados Comparativos:
+- **Rota Ótima Devolvida pelo UCS (Custo = 14 | 14 passos):**  
+  `[(0,0) -> (0,1) -> (0,2) -> (0,3) -> (0,4) -> (0,5) -> (0,6) -> (0,7) -> (1,7) -> (2,7) -> (3,7) -> (4,7) -> (5,7) -> (6,7) -> (7,7)]`  
+  Composta exclusivamente por 14 transições em carreadores firmes (`.`). Custo total: $14 \times 1 = \mathbf{14}$.
+
+- **Rota Subótima Devolvida pelo DFS (Custo = 53 | 14 passos):**  
+  `[(0,0) -> (1,0) -> (2,0) -> (3,0) -> (4,0) -> (5,0) -> (6,0) -> (7,0) -> (7,1) -> (7,2) -> (7,3) -> (7,4) -> (7,5) -> (7,6) -> (7,7)]`  
+  Composta por 13 transições em solo encharcado (`~`, custo 4) e a célula final (`.`, custo 1). Custo total: $(13 \times 4) + (1 \times 1) = \mathbf{53}$.
+
+### 3. Validação Matemática da Condição do Bônus:
+$$\text{Custo}(\text{DFS}) = 53 > 2 \times \text{Custo}(\text{Ótimo}) = 28$$
+$$\text{Razão} = \frac{53}{14} \approx \mathbf{3{,}786\times} \quad (\text{quase 4 vezes o custo da rota ótima!})$$
+
+### 4. Justificativa e Dedução Teórica (Construção Arquitetural, Não por Sorte):
+1. **Prioridade do Vetor de Expansão (De Sul a Norte):** Nossa convenção acordada é estritamente: 1º Sul $(+1, 0) \rightarrow$ 2º Leste $(0, +1) \rightarrow$ 3º Oeste $(0, -1) \rightarrow$ 4º Norte $(-1, 0)$.
+2. No nó de partida $(0, 0)$, existem dois operadores válidos: Sul em $(1, 0)$ e Leste em $(0, 1)$. Como o operador Sul é avaliado prioritariamente, a pilha LIFO do DFS retira $(1, 0)$ antes de sequer considerar $(0, 1)$.
+3. Ao entrar no corredor Sul, os bloqueios centrais (`#`) forçam o DFS a seguir em linha reta pela coluna 0 até $(7, 0)$ e depois pela linha 7 até $(7, 7)$, sem encontrar nenhum beco sem saída (*dead-end*).
+4. Como o DFS é uma busca cega totalmente desprovida de sensibilidade ao custo acumulado $g(n)$, ele jamais realiza backtracking para testar o ramo Leste. Ele entrega o caminho lamacento de custo 53, enquanto o UCS encontra a rodovia de carreadores de custo 14.
+
+---
+
+# Parte 4 - Regras, Incerteza e Sistema Especialista
+
+## 4.1 Mini Sistema Especialista Fitossanitário (Encadeamento para Trás)
+
+Desenvolvido no módulo [`src/especialista.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/especialista.py) para suporte à tomada de decisão agronômica na cultura da manga no Vale do São Francisco.
+
+### Base de Regras de Produção (v2 - Corrigida):
+- **$R_1$:** `SE armadilha_positiva E solo_encharcado E dias_desde_pulverizacao_maior_14 ENTÃO risco_fitossanitario_alto`
+- **$R_2$:** `SE risco_fitossanitario_alto E em_frutificacao ENTÃO inspecionar_prioridade_alta`
+- **$R_3$:** `SE inspecionar_prioridade_alta E alta_densidade_pragas E periodo_carencia_seguro ENTÃO aplicar_defensivo_quimico_emergencial`
+- **$R_4$:** `SE armadilha_positiva E solo_firme E dias_desde_pulverizacao_menor_igual_14 ENTÃO monitorar_armadilha_48h`
+- **$R_5$:** `SE armadilha_negativa E solo_firme ENTÃO manter_rotina_preventiva`
+- **$R_6$:** `SE manter_rotina_preventiva E dias_para_colheita_menor_igual_7 ENTÃO liberar_talhao_para_colheita`
+- **$R_7$ (Salvaguarda Sanitária):** `SE inspecionar_prioridade_alta E alta_densidade_pragas E colheita_iminente_sob_carencia ENTÃO aplicar_controle_biologico_e_interditar_colheita`
+
+### Mecanismo de Explicação ("Por que você concluiu isso?"):
+O motor retroativo (`BackwardChaining`) recebe a meta e investiga as premissas recursivamente, gerando a cadeia explicativa estruturada.
+
+---
+
+## 4.2 Quebra da Própria Base e Correção de Salvaguarda
+
+### 🚨 O Caso Legítimo do Domínio que Quebrou a Base Inicial (v1):
+Na Base Inicial (v1), a regra $R_3$ prescrevia aplicação química imediata sem verificar o **período de carência pré-colheita**:
+`SE inspecionar_prioridade_alta E alta_densidade_pragas ENTÃO aplicar_defensivo_quimico_emergencial`
+
+**Cenário Real do Vale do São Francisco:** Um talhão com alta infestação de mosca-das-frutas (*Ceratitis capitata*) a apenas 3 dias da colheita programada para exportação.
+- **Traço na Base v1:** Disparou $R_3 \rightarrow$ Recomenda pulverização com inseticida fosforado sistêmico.  
+  *Impacto de Negócio:* Violação das diretrizes da ANVISA e do Ministério da Agricultura (MAPA). Mangas colhidas com resíduos tóxicos seriam incineradas nos portos da União Europeia e dos EUA, gerando multas milionárias e cancelamento de certificação GlobalGAP para a cooperativa.
+
+### 🛡️ Correção Implementada (Base v2) sem Contradições:
+1. Refinamento de $R_3$: Condiciona a pulverização química à satisfação da premissa `periodo_carencia_seguro` ($\ge 14$ dias).
+2. Introdução de $R_7\_SALVAGUARDA$: Se houver `colheita_iminente_sob_carencia`, aciona `aplicar_controle_biologico_e_interditar_colheita` (uso de vespas parasitoides *Diachasmimorpha longicaudata* ou iscas tóxicas de espinosade permitidas em pré-colheita).
+
+### 📋 Traço de Execução Antes e Depois (Gerado por `especialista.py`):
+```text
+--- ANTES (Base v1) ---
+Provar: 'aplicar_defensivo_quimico_emergencial' -> True
+Cadeia explicativa:
+  Conclusão: 'aplicar_defensivo_quimico_emergencial'
+    Disparou [R3] SE inspecionar_prioridade_alta E alta_densidade_pragas ENTÃO aplicar_defensivo_quimico_emergencial
+    |-- Conclusão: 'inspecionar_prioridade_alta'
+        Disparou [R2] SE risco_fitossanitario_alto E em_frutificacao ENTÃO inspecionar_prioridade_alta
+        |-- Conclusão: 'risco_fitossanitario_alto'
+            Disparou [R1] SE armadilha_positiva E solo_encharcado E dias_desde_pulverizacao_maior_14
+            
+--- DEPOIS (Base v2 Corrigida) ---
+1) Provar 'aplicar_defensivo_quimico_emergencial' -> False (BLOQUEADO por falta de carência segura)
+2) Provar 'aplicar_controle_biologico_e_interditar_colheita' -> True
+Cadeia explicativa:
+  Conclusão: 'aplicar_controle_biologico_e_interditar_colheita'
+    Disparou [R7_SALVAGUARDA] SE inspecionar_prioridade_alta E alta_densidade_pragas E colheita_iminente_sob_carencia
+    |-- Fato comprovado: 'colheita_iminente_sob_carencia'
+    |-- Fato comprovado: 'alta_densidade_pragas'
+    |-- Conclusão: 'inspecionar_prioridade_alta' (derivada via R2 e R1)
+```
+
+---
+
+## 4.3 Análise Probabilística Bayesiana com os Números da Semente Oficial 24114066
+
+Parâmetros extraídos da semente `24114066` via `parametros_sensor(24114066)` em [`src/bayes.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/bayes.py):
+- **Prevalência da praga:** $P(I) = 0{,}047$ ($4{,}7\%$) $\implies P(\sim I) = 0{,}953$ ($95{,}3\%$)
+- **Sensibilidade do sensor:** $P(S^+ \mid I) = 0{,}95$ ($95{,}0\%$)
+- **Taxa de falso positivo:** $P(S^+ \mid \sim I) = 0{,}03$ ($3{,}0\%$)
+- **Talhões inspecionados por semana:** $800\text{ talhões}$
+
+### (a) Aplicação Formal do Teorema de Bayes com Substituição:
+$$P(I \mid S^+) = \frac{P(S^+ \mid I) \cdot P(I)}{P(S^+ \mid I) \cdot P(I) + P(S^+ \mid \sim I) \cdot P(\sim I)}$$
+Substituindo os valores oficiais:
+$$P(I \mid S^+) = \frac{0{,}95 \times 0{,}047}{(0{,}95 \times 0{,}047) + (0{,}03 \times 0{,}953)} = \frac{0{,}04465}{0{,}04465 + 0{,}02859} = \frac{0{,}04465}{0{,}07324} = \mathbf{0{,}6096} \implies \mathbf{60{,}96\%}$$
+
+### (b) Taxa de Alertas Falsos e Frase Complementada:
+- Taxa de Alertas Falsos ($FDR = 1 - VPP$): $1 - 0{,}6096 = 0{,}3904$ ($39{,}04\%$).
+- **Frase Oficial do Enunciado:**
+  > *"a cada 100 alertas do meu sistema, cerca de **39** serão falsos."*
+
+### (c) Impacto Operacional no Campo (800 talhões/semana, 12 minutos/inspeção):
+- Volume de talhões saudáveis: $800 \times 0{,}953 = 762{,}4\text{ talhões}$.
+- **Alertas Falsos Semanais Recebidos:**
+  $$\text{Alertas Falsos} = 762{,}4 \times 0{,}03 = \mathbf{22{,}87\text{ alertas falsos/semana}}$$
+- Tempo por inspeção presencial: $12\text{ minutos} = 0{,}2\text{ hora}$.
+- **Custo Operacional Semanal:**
+  $$\text{Horas Semanais de Agrônomos Desperdiçadas} = 22{,}87 \times 0{,}2\text{ h} = \mathbf{4{,}57\text{ horas/semana}}$$
+  (Aproximadamente **4 horas e 34 minutos por semana** jogadas fora investigando talhões sadios).
+
+### (d) Cenário de Aumento de Sensibilidade (99,9%) vs Redução de Falsos Positivos:
+Elevando a sensibilidade para $99{,}9\%$ ($P(S^+ \mid I) = 0{,}999$) mantendo $FPR = 3\%$:
+$$VPP_{novo} = \frac{0{,}999 \times 0{,}047}{(0{,}999 \times 0{,}047) + (0{,}03 \times 0{,}953)} = \frac{0{,}046953}{0{,}046953 + 0{,}02859} = \frac{0{,}046953}{0{,}075543} = \mathbf{62{,}15\%}$$
+- **O problema melhorou?**  
+  **Não.** O VPP aumentou irrisoriamente em apenas **$+1{,}19\text{ ponto percentual}$** (de $60,96\%$ para $62,15\%$). Mais grave: o número de falsos alertas continua exatamente em **$22{,}87$ por semana** e as **$4{,}57\text{ horas}$** de agrônomos continuam sendo desperdiçadas, pois o volume de talhões sadios não foi alterado.
+- **Qual parâmetro mexer na prática e por quê?**  
+  Deve-se focar estritamente na **REDUÇÃO DA TAXA DE FALSOS POSITIVOS (aumento da especificidade)**. Devido à baixa prevalência natural da praga ($4,7\%$), a massa de talhões sadios ($95,3\%$) é esmagadora. Se a equipe de engenharia reduzir o falso positivo de $3\%$ para $0,5\%$, o VPP salta de $60,96\%$ para **$90,32\%$**, reduzindo as horas desperdiçadas de 4,57h para meras 0,76h semanais.
+
+---
+
+## 4.4 A Regra Que Salva o Modelo (Auditabilidade e Responsabilidade)
+
+> **Decisão Agronômica Obrigatória em Regra Explícita Determinística:**  
+> *"Interdição sanitária imediata e suspensão de pulverização química se o intervalo para colheita for inferior ao Período de Carência do ingrediente ativo (dias_para_colheita < carencia_minima_dias)."*
+
+### Justificativa de Responsabilidade e Auditabilidade (Não de Acurácia):
+Modelos estatísticos ou aprendidos (redes neurais, classificadores probabilísticos, regressões) operam como estimadores de verossimilhança sujeitos a ruído estocástico e distribuições com caudas longas. Um modelo de aprendizado pode ter $99,5\%$ de acurácia média e, ainda assim, cometer uma falha pontual catastrófica ao autorizar defensivo químico num lote a 48 horas da colheita.  
+Sob a legislação agropecuária nacional (MAPA, ANVISA) e os padrões internacionais de exportação (Codex Alimentarius / GlobalGAP), a contaminação de alimentos envolve **responsabilidade civil e criminal objetiva**. Em caso de notificação sanitária e retenção de carga, a cooperativa necessita de uma **trilha de auditoria determinística inequívoca** que comprove perante a justiça que o sistema possui travas formais de segurança inegociáveis. Um modelo de caixa-preta probabilístico é juridicamente indefensável; uma regra simbólica explícita de salvaguarda é auditável, verificável e inviolável.
 
 ---
 
@@ -166,73 +411,57 @@ A cooperativa de fruticultores do Vale do São Francisco recebeu uma proposta t�
 ---
 
 ### 1ª Afirmação da AgroVision:
-> *"Nosso algoritmo de busca em largura (BFS) garante encontrar a rota ótima com o menor tempo de processamento, pois alcança o galpão de coleta no menor número possível de passos."*
+> *"Nosso planejador de rota usa A\* com heurística Manhattan multiplicada por 4. Como o A\* é comprovadamente ótimo, a rota entregue ao produtor é sempre a mais barata possível."*
 
 - **Classificação:** ❌ **INCORRETA**
 - **Fundamentação Teórica e Empírica:**  
-  A afirmação confunde propositalmente **otimalidade de passos** com **otimalidade de custo financeiro/energético**. Como demonstrado na Aula 03 e comprovado empiricamente na Tabela da Seção 2.2:
-  - O BFS encontrou uma rota de 22 passos com custo total **43**.
-  - O UCS encontrou uma rota também de 22 passos com custo total **37**.  
-  Como o custo dos talhões é heterogêneo (carreador = 1 vs. solo encharcado = 4), a rota do BFS resultou em um custo **$16,2\%$ superior ao ótimo**. O trator da AgroVision gastará mais óleo diesel e correrá risco severo de atolamento para entregar o mesmo número de passos.
+  A garantia matemática de otimalidade do A\* depende estritamente da **admissibilidade** da heurística ($h(n) \le h^*(n)$). Conforme demonstrado na Seção 3.2, no pomar o custo mínimo de piso é $c_{min} = 1$. A distância de Manhattan padrão $h_2$ já atinge o limitante inferior exato no grafo relaxado. Multiplicar Manhattan por 4 ($h_3 = 4 \times h_2$) transforma o A\* em uma busca gananciosa ponderada inadmissível.  
+  **Dado Empírico Medido:** Em nosso pomar oficial (`resultados.csv`), o A\* com $h_3$ devolveu uma rota com custo **40**, enquanto o UCS e o A\* admissível ($h_2$) encontraram a rota verdadeiramente ótima de custo **37**. A rota entregue pela AgroVision custa **$8,11\%$ a mais** em diesel e desgaste para o produtor.
 
 ---
 
 ### 2ª Afirmação da AgroVision:
-> *"Multiplicar a distância de Manhattan por 4 na heurística do A\* ($h_3 = 4 \times h_2$) é uma inovação exclusiva da AgroVision que preserva a garantia de rota de menor custo e acelera a convergência."*
+> *"Ao substituir BFS por A\*, o custo da rota caiu 38%. Isso demonstra que a heurística melhora a qualidade da solução."*
 
-- **Classificação:** ❌ **INCORRETA**
+- **Classificação:** ⚠️ **PARCIALMENTE CORRETA (com conclusão conceitualmente falaciosa)**
 - **Fundamentação Teórica e Empírica:**  
-  A garantia matemática de que o A* devolve uma rota de custo ótimo repousa no teorema da **admissibilidade** (Aula 03): $h(n) \le h^*(n)$ para todo nó $n$.  
-  - No pomar, o menor custo possível por passo em carreador firme é $c = 1$. Portanto, a distância de Manhattan padrão $h_2(n)$ já é o limitante inferior exato no grafo relaxado (admissível).
-  - Ao inflacionar a heurística por 4 ($h_3(n) = 4 \cdot h_2(n)$), ela passa a superestimar grosseiramente o custo restante para qualquer caminho que transite por carreadores firmes.  
-  **Dado Empírico:** Em nossos testes no pomar oficial (`resultados.csv`), o A* com $h_3$ devolveu uma rota com custo **40**, violando o custo ótimo descoberto pelo UCS e pelo A* com Manhattan admissível ($h_2$), cujo custo foi **37**. A AgroVision sacrificou a rota ótima por ganância desmedida na função de avaliação.
+  A queda de custo decorre da **mudança de paradigma de busca (de busca cega por passos para busca orientada a custos de arco)**, e não da heurística per se. O BFS minimiza estritamente número de arestas/passos ignorando custos de terreno, entregando custo 43 em nosso pomar. A Busca de Custo Uniforme (UCS), que é uma busca cega com $h(n) = 0$, já encontra a rota ótima de custo **37**. O papel da heurística admissível no A\* ($h_2$) não é alterar o custo ótimo, mas sim **reduzir o número de nós expandidos** (de 115 no UCS para 102 no A\*), podando ramos desnecessários. A afirmação atribui à heurística uma virtude que pertence à função de custo acumulado $g(n)$.
 
 ---
 
 ### 3ª Afirmação da AgroVision:
-> *"Nosso sistema de navegação baseado em Busca de Custo Uniforme (UCS) é plenamente escalável para grandes fazendas de milhares de hectares sem demandar infraestrutura computacional pesada."*
+> *"Nosso detector tem 99% de sensibilidade. Portanto, entre os talhões que ele aponta, 99% estão de fato infestados."*
 
-- **Classificação:** ⚠️ **PARCIALMENTE CORRETA (com viés comercial enganoso)**
+- **Classificação:** ❌ **INCORRETA (Falácia da Taxa Base / Base Rate Fallacy)**
 - **Fundamentação Teórica e Empírica:**  
-  Embora o UCS garanta a rota ótima, sua complexidade de espaço em memória cresce exponencialmente em formulação de árvore e quadraticamente $O(n^2)$ em grafos de grade com busca completa.  
-  **Dado Empírico:** Nossos testes em [`src/escalabilidade.py`](file:///c:/Projetos%20Faculdade/caatinga-ai-sprint1/src/escalabilidade.py) comprovam que para uma fazenda de porte moderado ($n = 1000$, grade de $1.000 \times 1.000 = 1.000.000$ de células), o UCS consumiu **$188,45\text{ MB}$ de memória RAM** e levou mais de **3,4 segundos** apenas para processar uma rota. Para fazendas com dezenas de milhares de talhões ($n \ge 3000$), a fila de prioridade do UCS extrapola os limites de memória embarcada de controladores industriais e excede timeouts de 60 segundos. A solução exigiria podas heurísticas dirigidas (como A* com heurística consistente), refutando a alegação de leveza computacional.
+  A AgroVision comete a confusão estatística entre **Sensibilidade $P(S^+ \mid I)$** e **Valor Preditivo Positivo $P(I \mid S^+)$**.  
+  Utilizando os parâmetros reais certificados do pomar ($P(I) = 4,7\%$ e taxa de falso positivo $FPR = 3\%$):  
+  Mesmo com sensibilidade de $99\%$, a proporção de talhões apontados que estão de fato infestados é de apenas **$61,96\%$**, e não $99\%$. Cerca de **$38\%$ de todos os alertas disparados são falsos**, demandando inspeções humanas desnecessárias.
 
 ---
 
 ### 4ª Afirmação da AgroVision:
-> *"Nosso sensor óptico possui 95% de sensibilidade comprovada em laboratório; portanto, quando o alerta dispara em um talhão, a cooperativa pode ter 95% de certeza de que há infestação de pragas, justificando a imediata mobilização de fiscais."*
+> *"Aplicando o teste duas vezes no mesmo talhão e exigindo dois positivos, a confiança do alerta passa de 99%."*
 
-- **Classificação:** ❌ **INCORRETA (Falácia da Taxa Base / Base Rate Fallacy)**
+- **Classificação:** ⚠️ **PARCIALMENTE CORRETA (na teoria estatística condicional, incorreta na prática sem independência)**
 - **Fundamentação Teórica e Empírica:**  
-  A AgroVision comete o erro estatístico mais clássico em diagnósticos de Inteligência Artificial: **confundir Sensibilidade $P(S^+ \mid I)$ com Valor Preditivo Positivo (VPP) $P(I \mid S^+)$**.  
-  Utilizando os parâmetros certificados pelo gerador para a semente `24114066` no módulo [`src/bayes.py`](file:///c:/Projetos%20Faculdade/caatinga-ai-sprint1/src/bayes.py):
-  - Prevalência real da praga: $P(I) = 4,7\%$ (talhões sadios: $P(I^c) = 95,3\%$).
-  - Sensibilidade: $P(S^+ \mid I) = 95,0\%$.
-  - Falso Positivo: $P(S^+ \mid I^c) = 3,0\%$.  
-  Pelo **Teorema de Bayes**:
-  $$P(I \mid S^+) = \frac{0,95 \times 0,047}{(0,95 \times 0,047) + (0,03 \times 0,953)} = \frac{0,04465}{0,07324} = \mathbf{60,96\%}$$
-  - **Taxa Real de Alarmes Falsos (FDR):** $1 - 0,6096 = \mathbf{39,04\%}$.  
-  A cada 100 alertas gerados pelo sensor da AgroVision, **cerca de 39 alertas são completamente falsos**. Para uma cooperativa inspecionando 800 talhões por semana, isso representa **22,87 alarmes falsos semanais** e um desperdício direto de **4,57 horas semanais de agrônomos** correndo atrás de pragas inexistentes.
+  Sob a hipótese de **independência condicional** dos testes (mesma hipótese do classificador Naive Bayes), a probabilidade de dois falsos positivos consecutivos é $FPR^2 = 0,03^2 = 0,0009$ ($0,09\%$), e a sensibilidade conjunta é $0,95^2 \approx 0,9025$. Aplicando Bayes:
+  $$P(I \mid S_1^+, S_2^+) = \frac{0,9025 \times 0,047}{(0,9025 \times 0,047) + (0,0009 \times 0,953)} = \frac{0,04242}{0,04242 + 0,00086} \approx \mathbf{98{,}02\%}$$
+  Embora o VPP suba expressivamente para próximo de $98\%$, a premissa de independência falha no campo: se um sensor óptico gerou um alarme falso devido a brilho solar intenso ou poeira foliar na copa, repetir a foto segundos depois sob a mesma luz manterá o mesmo erro sistemático correlacionado.
 
 ---
 
 ### 5ª Afirmação da AgroVision:
-> *"Caso a cooperativa deseje reduzir os alertas falsos residuais, basta contratar nosso módulo premium que eleva a sensibilidade do sensor para 99,9% via inteligência artificial."*
+> *"Usamos DFS porque consome muito menos memória. Como o pomar é estático e totalmente observável, a DFS é suficiente para o problema."*
 
 - **Classificação:** ❌ **INCORRETA**
 - **Fundamentação Teórica e Empírica:**  
-  Trata-se de uma tentativa comercial de venda casada inócua. O cálculo probabilístico executado em `src/bayes.py` demonstra:
-  - Elevando a sensibilidade para $99,9\%$ enquanto a taxa de falsos positivos permanece em $3\%$, o novo VPP sobe de $60,96\%$ para **$62,15\%$** (um ganho marginal irrisório de apenas **$+1,19\text{ pontos percentuais}$**).
-  - O volume de alarmes falsos em talhões sadios continua rigorosamente o mesmo: **$22,87\text{ alertas falsos/semana}$**, e as mesmas **$4,57\text{ horas/semana}$** de agrônomos continuam sendo jogadas no lixo.  
-  **Razão Técnica:** A causa raiz dos alarmes falsos não é a falta de sensibilidade, mas sim a incidência da taxa de falso positivo ($3\%$) sobre a gigantesca massa de talhões saudáveis ($95,3\%$). O investimento técnico correto deve ser a **redução da taxa de falso positivo** (aumento da especificidade).
+  Embora o DFS consuma menos memória ($O(b \cdot m)$), ele é **incompleto sob ciclos** e **totalmente subótimo em custos**.  
+  **Evidência Empírica Esmagadora:** Em nosso contraexemplo formal do Bônus da Liga de IA ([`src/contraexemplo_bonus.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/contraexemplo_bonus.py)), comprovamos que em um pomar estático e observável de $8 \times 8$, o DFS devolveu uma rota com custo **53**, enquanto a rota ótima custava **14** (um custo **$3,79$ vezes superior**). Adotar DFS significa enviar o trator da cooperativa por atoleiros severos com risco contínuo de atolamento e consumo descontrolado de combustível.
 
 ---
 
 ## 🏛️ Parecer Final da Equipe Técnica à Diretoria da Cooperativa
 
 > **PARECER TÉCNICO: RECOMENDAÇÃO DE RECUSA DA PROPOSTA ATUAL DA AGROVISION**  
-> Recomendamos à Diretoria da Cooperativa a **RECUSA** da proposta comercial da AgroVision no formato submetido, com opção de **CONTRATAÇÃO COM RESSALVAS ESTRITAS** apenas se houver readequação técnica formal. A auditoria comprovou que a empresa utiliza marketing pseudocientífico: o BFS proposto entrega rotas subótimas $16,2\%$ mais caras, o A* anunciado utiliza heurística inflacionada não-admissível que perde o caminho de menor custo, e o sensor óptico gera **$39\%$ de alarmes falsos**, desperdiçando mais de 18 horas de agrônomos por mês sob a Falácia da Taxa Base. Como **condição técnica indispensável** para eventual homologação, a contratada deve: (1) substituir o algoritmo de navegação por A* com heurística de Manhattan admissível ($h_2$); (2) assumir contratualmente a redução da taxa de falsos positivos do sensor para $FPR \le 0,8\%$ (garantindo $VPP \ge 85\%$); e (3) integrar regras determinísticas de bloqueio fitossanitário no sistema especialista, sob pena de glosa contratual pelos prejuízos causados.
-
----
-
-*(As Partes 3, 4 e Bônus serão incorporadas pelo integrante João Vítor no Commit 10).*
+> Recomendamos à Diretoria da Cooperativa a **RECUSA** da proposta comercial da AgroVision no formato submetido, admitindo **CONTRATAÇÃO COM RESSALVAS ESTRITAS** apenas se houver reformulação técnica formal. A auditoria comprovou que a empresa utiliza marketing pseudocientífico: o BFS proposto entrega rotas subótimas $16,2\%$ mais caras, o A\* anunciado utiliza heurística inflacionada não-admissível que perde o caminho de menor custo, e o sensor óptico gera **$39\%$ de alarmes falsos**, desperdiçando mais de 18 horas de agrônomos por mês sob a Falácia da Taxa Base. Como **condição técnica indispensável** para eventual homologação, a contratada deve: (1) substituir o algoritmo de navegação por A\* com heurística de Manhattan admissível ($h_2$); (2) assumir contratualmente a redução da taxa de falsos positivos do sensor para $FPR \le 0,8\%$ (garantindo $VPP \ge 85\%$); e (3) integrar regras determinísticas de bloqueio fitossanitário no sistema especialista, sob pena de glosa contratual pelos prejuízos causados.
