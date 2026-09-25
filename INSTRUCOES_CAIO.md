@@ -5,10 +5,10 @@
 ---
 
 ## 📌 Status Atual do Projeto
-- **Último Commit Realizado:** `Commit 2` (por João Vítor Almeida)
-- **Mensagem:** `feat: implementa buscas cegas e informadas (BFS, DFS, UCS, A*) com 4 contadores e reabertura de nos`
-- **Artefato Criado:** `src/buscas.py`
-- **👉 Próximo Passo:** **`Commit 3` — AGORA É A VEZ DO CAIO!**
+- **Último Commit Realizado:** `Commit 3` (por Caio Lúcio Almeida)
+- **Mensagem:** `feat: implementa busca local com subida de encosta e tempera simulada para k=15`
+- **Artefato Criado:** `src/busca_local.py`
+- **👉 Próximo Passo:** **`Commit 4` — AGORA É A VEZ DO JOÃO VÍTOR!**
 
 ---
 
@@ -59,8 +59,8 @@ Alerte o João Vítor para que ele faça o `git fetch` / `git pull` e dê contin
 |:---:|:---:|:---|:---|:---:|
 | **1** | **João Vítor** | `feat: estrutura inicial do projeto com gerador_pomar e configuracoes` | `.gitignore`, `requirements.txt`, `src/gerador_pomar.py` | ✅ Concluído |
 | **2** | **João Vítor** | `feat: implementa buscas cegas e informadas (BFS, DFS, UCS, A*) com 4 contadores e reabertura de nos` | `src/buscas.py` | ✅ Concluído |
-| **3** | **Caio Lúcio** | `feat: implementa busca local com subida de encosta e tempera simulada para k=15` | `src/busca_local.py` | ⏳ **SUA VEZ AGORA** |
-| **4** | **João Vítor** | `feat: implementa sistema especialista com encadeamento para tras e explicacao` | `src/especialista.py` | ⏸️ Aguardando Caio |
+| **3** | **Caio Lúcio** | `feat: implementa busca local com subida de encosta e tempera simulada para k=15` | `src/busca_local.py` | ✅ Concluído |
+| **4** | **João Vítor** | `feat: implementa sistema especialista com encadeamento para tras e explicacao` | `src/especialista.py` | ⏳ **SUA VEZ AGORA** |
 | **5** | **Caio Lúcio** | `feat: implementa modulo bayesiano para analise do sensor de pragas` | `src/bayes.py` | ⏸️ Aguardando |
 | **6** | **João Vítor** | `feat: implementa script principal src/main.py gerando pomar, csv e grafico` | `src/main.py`, `resultados/` | ⏸️ Aguardando |
 | **7** | **Caio Lúcio** | `test: executa analise de escalabilidade experimental e limites teoricos` | `src/escalabilidade.py` | ⏸️ Aguardando |
