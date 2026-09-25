@@ -6,11 +6,11 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 
 ## Status Atual do Projeto
 
-- Último commit integrado: Commit 10 (realizado por João Vítor Almeida)
-- Mensagem do commit 10: docs: detalha analise de heuristicas, quebra da base especialista e metricas bayesianas
-- Artefatos entregues: RELATORIO.md (completo com todas as Partes 1 a 5 e Bônus)
-- Próximo passo: Commit 11 (responsabilidade de Caio Lúcio Almeida)
-- Módulo a desenvolver: ANEXO_IA.md (Parte 6 do enunciado: ferramentas, prompts na íntegra, erro documentado do assistente com evidência experimental e reflexão crítica)
+- Último commit integrado: Commit 11 (realizado por Caio Lúcio Almeida)
+- Mensagem do commit 11: docs: elabora ANEXO_IA.md com registro obrigatorio, prompts, erro documentado e reflexao
+- Artefatos entregues: ANEXO_IA.md (Parte 6 do enunciado completa)
+- Próximo passo: Commit 12 (responsabilidade de João Vítor Almeida)
+- Módulo a desenvolver: README.md (finalização completa com mapa do repositório, instruções de execução e tabela-resumo)
 
 ---
 
@@ -42,8 +42,8 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 | 8 | João Vítor | feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo) | src/contraexemplo_bonus.py | Concluído |
 | 9 | Caio Lúcio | docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision | RELATORIO.md (Partes 1, 2 e 5) | Concluído |
 | 10 | João Vítor | docs: detalha analise de heuristicas, quebra da base especialista e metricas bayesianas | RELATORIO.md (Partes 3, 4 e Bônus) | Concluído |
-| 11 | Caio Lúcio | docs: elabora ANEXO_IA.md com registro obrigatorio, prompts, erro documentado e reflexao | ANEXO_IA.md | Sua vez agora |
-| 12 | João Vítor | docs: finaliza README.md completo com instrucoes, tabela-resumo e mapa do repositorio | README.md | Aguardando |
+| 11 | Caio Lúcio | docs: elabora ANEXO_IA.md com registro obrigatorio, prompts, erro documentado e reflexao | ANEXO_IA.md | Concluído |
+| 12 | João Vítor | docs: finaliza README.md completo com instrucoes, tabela-resumo e mapa do repositorio | README.md | Sua vez agora |
 
 ---
 
