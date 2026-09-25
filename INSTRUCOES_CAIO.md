@@ -6,11 +6,11 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 
 ## Status Atual do Projeto
 
-- Último commit integrado: Commit 6 (realizado por João Vítor Almeida)
-- Mensagem do commit 6: feat: implementa script principal src/main.py gerando pomar, csv e grafico
-- Artefatos entregues: src/main.py, resultados/pomar.txt, resultados/resultados.csv, resultados/grafico.png
-- Próximo passo: Commit 7 (responsabilidade de Caio Lúcio Almeida)
-- Módulo a desenvolver: src/escalabilidade.py (Execução de análise de escalabilidade experimental e limites teóricos da Seção 2.4 do enunciado)
+- Último commit integrado: Commit 7 (realizado por Caio Lúcio Almeida)
+- Mensagem do commit 7: test: executa analise de escalabilidade experimental e limites teoricos
+- Artefatos entregues: src/escalabilidade.py
+- Próximo passo: Commit 8 (responsabilidade de João Vítor Almeida)
+- Módulo a desenvolver: src/contraexemplo_bonus.py (adiciona contraexemplo 8x8 para bonus da Liga de IA onde DFS > 2x otimo)
 
 ---
 
@@ -38,8 +38,8 @@ Este documento é um guia de sincronização e alinhamento entre João Vítor e 
 | 4 | João Vítor | feat: implementa sistema especialista com encadeamento para tras e explicacao | src/especialista.py | Concluído |
 | 5 | Caio Lúcio | feat: implementa modulo bayesiano para analise do sensor de pragas | src/bayes.py | Concluído |
 | 6 | João Vítor | feat: implementa script principal src/main.py gerando pomar, csv e grafico | src/main.py, pasta resultados/ | Concluído |
-| 7 | Caio Lúcio | test: executa analise de escalabilidade experimental e limites teoricos | src/escalabilidade.py | Sua vez agora |
-| 8 | João Vítor | feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo) | src/contraexemplo_bonus.py | Aguardando |
+| 7 | Caio Lúcio | test: executa analise de escalabilidade experimental e limites teoricos | src/escalabilidade.py | Concluído |
+| 8 | João Vítor | feat: adiciona contraexemplo 8x8 para bonus da Liga de IA (DFS > 2x otimo) | src/contraexemplo_bonus.py | Sua vez agora |
 | 9 | Caio Lúcio | docs: elabora analise teorica PEAS, dimensoes de ambiente e auditoria AgroVision | RELATORIO.md (Partes 1, 2 e 5) | Aguardando |
 | 10 | João Vítor | docs: detalha analise de heuristicas, quebra da base especialista e metricas bayesianas | RELATORIO.md (Partes 3, 4 e Bônus) | Aguardando |
 | 11 | Caio Lúcio | docs: elabora ANEXO_IA.md com registro obrigatorio, prompts, erro documentado e reflexao | ANEXO_IA.md | Aguardando |
