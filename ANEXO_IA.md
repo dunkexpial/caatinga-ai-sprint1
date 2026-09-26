@@ -3,7 +3,7 @@
 **Projeto:** Caatinga.AI - Automação Agronômica e Roteamento Inteligente no Semiárido  
 **Disciplina:** Inteligência Artificial (2026.2) - UniRios  
 **Docente:** Prof. Ronierison Maciel  
-**Autores:** Caio Lúcio dos Santos Almeida (`24114068`) & João Vítor Almeida dos Santos (`24114066`)  
+**Autores:** Caio Lúcio dos Santos Almeida (`24114035`) & João Vítor Almeida dos Santos (`24114066`)  
 **Semente Oficial:** `24114066`  
 
 ---
