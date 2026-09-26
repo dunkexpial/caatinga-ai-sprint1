@@ -131,7 +131,7 @@ Para garantir otimalidade sob custos heterogêneos, é obrigatório expandir a f
 
 ## 2.4 Síntese de Escalabilidade Experimental e Limites Teóricos
 
-A partir dos testes automatizados desenvolvidos no módulo [`src/escalabilidade.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/escalabilidade.py), variando $n$ desde 12 até 1000 com monitoramento de memória de pico via `tracemalloc`, consolidamos as seguintes constatações experimentais:
+A partir dos testes automatizados desenvolvidos no módulo [`src/escalabilidade.py`](src/escalabilidade.py), variando $n$ desde 12 até 1000 com monitoramento de memória de pico via `tracemalloc`, consolidamos as seguintes constatações experimentais:
 
 ```text
 n     | Células    | BFS (ms)  Pico MB  | DFS (ms)  Pico MB  | UCS (ms)  Pico MB  | A* (ms)   Pico MB
@@ -239,7 +239,7 @@ Em que situação concreta da cooperativa agrícola vale a pena trocar a garanti
    Combina o risco agronômico acumulado (severidade basal de pragas/umidade) com um bônus de dispersão espacial regular ($\lambda = 2{,}0$) para garantir cobertura geográfica equilibrada.
 
 ### Resultados Experimentais (30 Execuções Independentes):
-Implementados no módulo [`src/busca_local.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/busca_local.py):
+Implementados no módulo [`src/busca_local.py`](src/busca_local.py):
 
 | Algoritmo de Busca Local | Score Médio | Desvio Padrão | Melhor Valor (Max) | Pior Valor (Min) | Tempo Médio por Rodada |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -260,7 +260,7 @@ $$P(\text{aceitar piora}) = e^{\frac{\Delta f}{T}}$$
 
 Atendendo às diretrizes do regulamento da Liga de IA, foi construída à mão uma grade $8 \times 8$ determinística demonstrando que a Busca em Profundidade (DFS) devolve uma rota cujo custo excede em quase 4 vezes o custo da rota ótima devolvida pelo UCS.
 
-Código executável e verificação implementados em [`src/contraexemplo_bonus.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/contraexemplo_bonus.py).
+Código executável e verificação implementados em [`src/contraexemplo_bonus.py`](src/contraexemplo_bonus.py).
 
 ### 1. Representação Visual da Grade 8x8 Construída à Mão:
 ```text
@@ -301,7 +301,7 @@ $$\text{Razão} = \frac{53}{14} \approx \mathbf{3{,}786\times} \quad (\text{quas
 
 ## 4.1 Mini Sistema Especialista Fitossanitário (Encadeamento para Trás)
 
-Desenvolvido no módulo [`src/especialista.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/especialista.py) para suporte à tomada de decisão agronômica na cultura da manga no Vale do São Francisco.
+Desenvolvido no módulo [`src/especialista.py`](src/especialista.py) para suporte à tomada de decisão agronômica na cultura da manga no Vale do São Francisco.
 
 ### Base de Regras de Produção (v2 - Corrigida):
 - **$R_1$:** `SE armadilha_positiva E solo_encharcado E dias_desde_pulverizacao_maior_14 ENTÃO risco_fitossanitario_alto`
@@ -358,7 +358,7 @@ Cadeia explicativa:
 
 ## 4.3 Análise Probabilística Bayesiana com os Números da Semente Oficial 24114066
 
-Parâmetros extraídos da semente `24114066` via `parametros_sensor(24114066)` em [`src/bayes.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/bayes.py):
+Parâmetros extraídos da semente `24114066` via `parametros_sensor(24114066)` em [`src/bayes.py`](src/bayes.py):
 - **Prevalência da praga:** $P(I) = 0{,}047$ ($4{,}7\%$) $\implies P(\sim I) = 0{,}953$ ($95{,}3\%$)
 - **Sensibilidade do sensor:** $P(S^+ \mid I) = 0{,}95$ ($95{,}0\%$)
 - **Taxa de falso positivo:** $P(S^+ \mid \sim I) = 0{,}03$ ($3{,}0\%$)
@@ -457,7 +457,7 @@ A cooperativa de fruticultores do Vale do São Francisco recebeu uma proposta t�
 - **Classificação:** ❌ **INCORRETA**
 - **Fundamentação Teórica e Empírica:**  
   Embora o DFS consuma menos memória ($O(b \cdot m)$), ele é **incompleto sob ciclos** e **totalmente subótimo em custos**.  
-  **Evidência Empírica Esmagadora:** Em nosso contraexemplo formal do Bônus da Liga de IA ([`src/contraexemplo_bonus.py`](file:///c:/Users/yyyjo/Caatinga.IA/src/contraexemplo_bonus.py)), comprovamos que em um pomar estático e observável de $8 \times 8$, o DFS devolveu uma rota com custo **53**, enquanto a rota ótima custava **14** (um custo **$3,79$ vezes superior**). Adotar DFS significa enviar o trator da cooperativa por atoleiros severos com risco contínuo de atolamento e consumo descontrolado de combustível.
+  **Evidência Empírica Esmagadora:** Em nosso contraexemplo formal do Bônus da Liga de IA ([`src/contraexemplo_bonus.py`](src/contraexemplo_bonus.py)), comprovamos que em um pomar estático e observável de $8 \times 8$, o DFS devolveu uma rota com custo **53**, enquanto a rota ótima custava **14** (um custo **$3,79$ vezes superior**). Adotar DFS significa enviar o trator da cooperativa por atoleiros severos com risco contínuo de atolamento e consumo descontrolado de combustível.
 
 ---
 

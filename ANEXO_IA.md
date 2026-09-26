@@ -3,8 +3,8 @@
 **Projeto:** Caatinga.AI - Automação Agronômica e Roteamento Inteligente no Semiárido  
 **Disciplina:** Inteligência Artificial (2026.2) - UniRios  
 **Docente:** Prof. Ronierison Maciel  
-**Autores:** Caio Lúcio dos Santos Almeida (`24114035`) & João Vítor Almeida dos Santos (`24114066`)  
-**Semente Oficial:** `24114066`  
+**Autores:** Caio Lúcio dos Santos Almeida (24114035) & João Vítor Almeida dos Santos (24114066)  
+**Semente Oficial:** 24114066
 
 ---
 
@@ -12,13 +12,10 @@
 
 Durante o desenvolvimento da Sprint 1 do projeto Caatinga.AI, a dupla utilizou de forma consciente, crítica e orientada a engenharia as seguintes ferramentas:
 
-1. **Google Antigravity IDE (com Gemini 3.8 Flash e Gemini 3.8 Pro):**
-   - Utilizado como ambiente de assistência ao pareamento de código (pair programming), refatoração modular, instrumentação de testes assintóticos de memória com `tracemalloc` e elaboração da arquitetura limpa em Python.
+1. **Google Antigravity IDE (com Gemini 3.8 Flash e Claude Sonnet/Opus 4.6):**
+   - Utilizado como ambiente de assistência ao pareamento de código, refatoração modular, instrumentação de testes assintóticos de memória com tracemalloc e elaboração da arquitetura limpa em Python.
 2. **ChatGPT (OpenAI GPT-4o):**
    - Utilizado em sessões exploratórias conceituais para brainstorming da modelagem PEAS, formatação de tabelas Markdown e checagem cruzada das deduções analíticas do Teorema de Bayes.
-3. **GitHub Copilot:**
-   - Empregado para autocompletar trechos repetitivos de código (como tipagem de assinaturas `typing.Tuple`, `typing.Dict` e cabeçalhos de funções).
-
 ### Distribuição do Apoio por Módulo do Projeto:
 
 | Módulo do Repositório | Papel do Assistente de IA | Papel Crítico e Decisório da Dupla Humana |
@@ -36,10 +33,10 @@ Durante o desenvolvimento da Sprint 1 do projeto Caatinga.AI, a dupla utilizou d
 
 Abaixo constam dois diálogos reais, transcritos na íntegra, demonstrando a interação técnica da dupla com o assistente:
 
-### 📌 Diálogo 1: Modelagem da Função Objetivo para Busca Local (K=15)
+### Diálogo 1: Modelagem da Função Objetivo para Busca Local (K=15)
 
 #### Prompt Submetido:
-> *"Estamos desenvolvendo o módulo de busca local (Hill Climbing e Simulated Annealing) para selecionar K = 15 talhões de inspeção fitossanitária em um pomar 12x12 gerado proceduralmente no semiárido da Caatinga. O pomar tem carreadores '.', poças alagadas '~' e bloqueios '#'. Queremos uma função objetivo realista que faça sentido agronômico para fruticultura irrigada. Como formular essa função objetivo para maximizar tanto o foco em pragas quanto a cobertura geográfica, sem que o algoritmo coloque todos os 15 fiscais grudados no mesmo lamaçal?"*
+> *"Estamos desenvolvendo o módulo de busca local pra selecionar K = 15 talhões de inspeção em um pomar 12x12 gerado no semiárido da Caatinga, o pomar tem carreadores '.', poças alagadas '~' e bloqueios '#'. Queremos uma função faça sentido agronômico para fruticultura irrigada. Precisamos formular essa função objetivo para maximizar o foco e a cobertura geográfica, sem que o algoritmo coloque todos os 15 fiscais grudados no mesmo lamaçal?"*
 
 #### Resposta Recebida:
 > *"Para modelar um problema realista de inspeção em agricultura de precisão, a função objetivo deve equilibrar dois termos conflitantes em uma formulação multiobjetivo escalarizada:*  
@@ -50,10 +47,10 @@ Abaixo constam dois diálogos reais, transcritos na íntegra, demonstrando a int
 
 ---
 
-### 📌 Diálogo 2: Análise da Falácia da Taxa Base no Sensor Óptico de Pragas
+### Diálogo 2: Análise da Falácia da Taxa Base no Sensor Óptico de Pragas
 
 #### Prompt Submetido:
-> *"No projeto Caatinga.AI, temos um sensor óptico para monitoramento de pragas em talhões de manga. Os parâmetros da nossa semente oficial (24114066) são: prevalência de praga de 4,7%, sensibilidade de 95% e taxa de falsos positivos de 3%. A fazenda inspeciona 800 talhões por semana. Um relatório comercial da empresa concorrente afirma que 'com 95% de sensibilidade, se o sensor apitou positivo, há 95% de certeza de que o talhão está doente'. Demonstre formalmente pelo Teorema de Bayes se essa afirmação procede, calcule a probabilidade real e determine o impacto operacional semanal."*
+> *"No projeto temos um sensor óptico para monitoramento de pragas em talhões de manga. Os parâmetros da nossa semente oficial (24114066) são: prevalência de praga de 4,7%, sensibilidade de 95% e taxa de falsos positivos é 3%. A fazenda inspeciona 800 talhões por semana, um relatório comercial da empresa concorrente afirma que 'com 95% de sensibilidade, se o sensor apitou positivo, há 95% de certeza de que o talhão está doente'. Demonstre pelo Teorema de Bayes se essa afirmação é verdadeira e calcule a probabilidade real e determine o impacto operacional semanal."*
 
 #### Resposta Recebida:
 > *"A afirmação do relatório concorrente é categoricamente FALSA e incorre no viés cognitivo e estatístico conhecido como Falácia da Taxa Base (Base Rate Fallacy). O relatório comete o erro clássico de confundir a Sensibilidade P(Positivo | Infestado) com o Valor Preditivo Positivo P(Infestado | Positivo).*  
@@ -78,10 +75,10 @@ Abaixo constam dois diálogos reais, transcritos na íntegra, demonstrando a int
 
 Durante o desenvolvimento do módulo de buscas informadas (`src/buscas.py`), submetemos uma consulta ao assistente sobre o comportamento do algoritmo A* com diferentes heurísticas na grade do pomar.
 
-### ❌ A Afirmação Incorreta do Assistente:
+### A Afirmação Incorreta do Assistente:
 > *"Como no pomar existem poças alagadas com custo 4, multiplicar a distância de Manhattan por 4 na heurística h3(n) = 4 * (|r - r_meta| + |c - c_meta|) não causará nenhum problema de otimalidade. Pelo contrário: ela continuará admissível no pior caso do terreno e fará o algoritmo A* se comportar de forma muito mais agressiva em direção à meta, expandindo menos nós e garantindo a rota de menor custo mais rápido do que a heurística de Manhattan normal."*
 
-### 🔍 Por que a Afirmação Está Errada Teórica e Matematicamente?
+### Por que a Afirmação Está Errada Teórica e Matematicamente?
 Conforme estabelece a teoria fundamental de busca heurística (Russell & Norvig, Cap. 3 / Aula 03):
 - Uma heurística $h(n)$ é **admissível** se e somente se ela for um limitante inferior do custo real ótimo até o objetivo para **todos** os nós do espaço de estados:
   $$h(n) \le h^*(n), \quad \forall n$$
@@ -91,14 +88,14 @@ Conforme estabelece a teoria fundamental de busca heurística (Russell & Norvig,
   $$h_3(n) = 4 \times Dist(n, meta) \gg h^*(n)$$
 - A heurística torna-se **inadmissível**. A perda de admissibilidade quebra o teorema fundamental de otimalidade do A*: o algoritmo passa a agir como uma busca puramente gananciosa (Greedy Best-First), podando precocemente ramos promissores de menor custo acumulado $g(n)$ e comprometendo a garantia de encontrar a rota mais barata.
 
-### 🧪 Evidência Experimental Irrefutável Produzida no Código da Dupla:
-Executando o script oficial consolidado em `src/main.py` e inspecionando o arquivo de saída gerado [`resultados/resultados.csv`](file:///c:/Projetos%20Faculdade/caatinga-ai-sprint1/resultados/resultados.csv):
+### Evidência Experimental Irrefutável Produzida no Código da Dupla:
+Executando o script oficial consolidado em `src/main.py` e inspecionando o arquivo de saída gerado [`resultados/resultados.csv`](resultados/resultados.csv):
 
 | Algoritmo | Heurística | Custo Obtido | Nós Expandidos | Fronteira Máxima | Rota Ótima Garantida? |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **UCS (Dijkstra)** | N/A | **37** | 115 | 14 | ✅ **Sim (Referência Ótima)** |
-| **A\*** | **$h_2$ (Manhattan Padrão)** | **37** | **102** | 17 | ✅ **Sim (Ótimo)** |
-| **A\*** | **$h_3$ (4x Manhattan Inflacionada)** | **40** | **23** | 24 | ❌ **NÃO (Subótimo!)** |
+| **UCS (Dijkstra)** | N/A | **37** | 115 | 14 | **Sim (Referência Ótima)** |
+| **A\*** | **$h_2$ (Manhattan Padrão)** | **37** | **102** | 17 | **Sim (Ótimo)** |
+| **A\*** | **$h_3$ (4x Manhattan Inflacionada)** | **40** | **23** | 24 | **NÃO (Subótimo!)** |
 
 #### Conclusão Empírica:
 A execução no computador desmascarou categoricamente a resposta da IA. O A* com a heurística inflacionada $h_3$ devolveu uma rota com **custo 40**, que é **$8,1\%$ mais cara** do que a rota ótima de **custo 37** descoberta pelo UCS e pelo A* com Manhattan admissível ($h_2$).  
@@ -108,4 +105,4 @@ A IA alucinou que a rota ótima seria preservada, quando na realidade o algoritm
 
 ## A.4 Reflexão Final da Dupla
 
-> *"Depois de rodar o código e confrontar os resultados na prática, aprendemos que a retórica confiante e a elegância formal das respostas da IA generativa frequentemente mascaram suposições ingênuas e violações graves de admissibilidade que apenas o rigor matemático das aulas e a evidência empírica dos contadores de execução são capazes de desmascarar."*
+> *"Após testar o código e ver os resultados, aprendemos que a IA, pelo excesso de confiança, podem acabar mascarando alucinações que necessitam de verificação manual e humana para enxergar através do espelho falso. Esse é o perigo do uso não verificado de LLMs, apesar de servirem como um bom workhorse. Pelo menos até chegada das AGIs (se acontecer, né...)"*
