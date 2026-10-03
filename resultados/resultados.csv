@@ -1,7 +1,7 @@
 estrategia,heuristica,custo,passos,nos_expandidos,fronteira_max,tempo_ms
-BFS,N/A,43,22,113,11,0.260
-DFS,N/A,43,22,23,24,0.050
-UCS,N/A,37,22,115,14,0.284
-A*,h1 (zero),37,22,115,14,0.288
-A*,h2 (Manhattan),37,22,102,17,0.275
-A*,h3 (4x Manhattan),40,22,23,24,0.078
+BFS,N/A,43,22,113,11,0.201
+DFS,N/A,43,22,23,24,0.048
+UCS,N/A,37,22,115,14,0.276
+A*,h1 (zero),37,22,115,14,0.364
+A*,h2 (Manhattan),37,22,102,17,0.360
+A*,h3 (4x Manhattan),40,22,23,24,0.100

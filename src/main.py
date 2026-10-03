@@ -254,5 +254,20 @@ def executar_pipeline_completo(matricula: int = 24114066) -> None:
 
 
 if __name__ == "__main__":
-    matricula_cmd = int(sys.argv[1]) if len(sys.argv) > 1 else 24114066
+    import random
+
+    if len(sys.argv) > 1:
+        arg = sys.argv[1].strip().lower()
+        if arg in ("random", "aleatorio", "aleatoria", "--random", "-r"):
+            matricula_cmd = random.randint(10000000, 99999999)
+            print(f"\n[INFO] Modo aleatório ativado! Semente sorteada: {matricula_cmd}")
+        else:
+            try:
+                matricula_cmd = int(sys.argv[1])
+            except ValueError:
+                print(f"[ERRO] Parâmetro inválido: '{sys.argv[1]}'. Forneça um número de matrícula ou 'random'.")
+                sys.exit(1)
+    else:
+        matricula_cmd = 24114066
+
     executar_pipeline_completo(matricula_cmd)
